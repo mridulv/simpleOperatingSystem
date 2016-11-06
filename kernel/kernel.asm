@@ -1,30 +1,27 @@
 [org 0x7c00]
 
-helloWorld: 
-	db 'Hello World !!!'
+BEGIN_STR:
+	db "Hello World !!!"
 	db 0x0
 	db 0x0
 
-print_string:
-	mov ebx, helloWorld
-	mov ecx, 0xb8000
+PROTECTED_MODE_STR: 
+	db "Started PM"
+	db 0x0
+	db 0x0
 
-print_character: 
-	mov al, [ebx]
-	mov ah, 0x0f
+mov ebx, BEGIN_STR
+call print_string
 
-	cmp al, 0
-	je loop
+call switch_to_pm
 
-	mov [ecx], ax
-	add ebx, 1
-	add ecx, 2
+%include "kernel/switch.asm"
 
-	;Instructions of the form jmp address are encoded using relative offsets in x86. The offsets are relative to the address immediately following the jmp instruction.
-	jmp print_character
+BEGIN_PROTECTED_MODE:
+	mov ebx, PROTECTED_MODE_STR
+	call print_string
 
-loop:
-	jmp loop
+jmp $
 
 times 510-($-$$) db 0
 dw 0xaa55
