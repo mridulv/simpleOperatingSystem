@@ -1,19 +1,18 @@
 print_string:
-	mov ecx, 0xb8000
+  pusha
 
-print_character: 
-	mov al, [ebx]
-	mov ah, 0x0f
+loop:
+  mov  al, [si]
+  or  al, al
+  jz return
 
-	cmp al, 0
-	je done
+  xor bx, bx
+  mov  ah, 0x0E    ;Teletype function
+  int  0x10
+  
+  inc  si
+  jmp  loop
 
-	mov [ecx], ax
-	add ebx, 1
-	add ecx, 2
-
-	;Instructions of the form jmp address are encoded using relative offsets in x86. The offsets are relative to the address immediately following the jmp instruction.
-	jmp print_character
-
-done:
-	ret
+return:
+  popa
+  ret
