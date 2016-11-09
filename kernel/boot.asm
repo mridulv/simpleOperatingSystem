@@ -1,5 +1,7 @@
 [org 0x7c00]
 
+KERNEL_OFFSET equ 0x1000
+
 mov [BOOT_DRIVE], dl
 
 BEGIN_STR db "Hello World !!! ", 0, 0
@@ -16,7 +18,9 @@ call switch_to_pm
 jmp $
 
 LOADING_KERNEL:
-	mov dh, 15
+	mov bx, KERNEL_OFFSET
+
+	mov dh, 1
 	call set_memory
 
 	mov si, BEGIN_STR
@@ -36,6 +40,8 @@ BEGIN_PROTECTED_MODE:
 	mov ebx, PROTECTED_MODE_STR
 	call print_string_pm
 
+	call KERNEL_OFFSET
+
 	jmp $
 
 
@@ -45,5 +51,3 @@ START_KERNEL:
 
 times 510-($-$$) db 0
 dw 0xaa55
-
-times 15*256 dw 0xDADA

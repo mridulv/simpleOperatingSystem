@@ -1,9 +1,6 @@
 set_memory:
 	mov dl, [BOOT_DRIVE]
-	mov	ax, 0x1000
-	mov	es, ax
-	xor	bx, bx
-
+	
 retry_count:
 	mov di, 5
 
@@ -60,7 +57,6 @@ disk_error_2:
 	ret
 
 BOOT_DRIVE db 0
-KERNEL_OFFSET equ 0x1000
 
 DISK_READING_START db "Disk Start from the starting ", 0, 0
 DISK_ERROR_MSG db "Disk read error mridul ", 0, 0

@@ -1,7 +1,5 @@
+[bits 32]
 [extern main]
 
-db "Hello World !!!"
-
 call main
-
 jmp $
