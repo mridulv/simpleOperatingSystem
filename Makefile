@@ -7,7 +7,7 @@ kernel_entry.o:
 	nasm kernel/kernel_entry.asm -f elf -o bin/kernel_entry.o
 
 kernel.bin: kernel_entry.o kernel.o
-	ld -melf_i386 -o bin/kernel.bin -Ttext 0x1000 bin/kernel_entry.o bin/kernel.o --oformat binary
+	ld -melf_i386 -o bin/kernel.bin -T kernel/linker.ld bin/kernel_entry.o bin/kernel.o --oformat binary
 
 debug: kernel.bin
 	od -t x1 -A n bin/kernel.bin
